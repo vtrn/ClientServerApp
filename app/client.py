@@ -1,8 +1,14 @@
 from socket import *
-from func_param import *
-from func_send_recv import *
+
+if __name__ == '__main__':
+    from func_param import *
+    from func_send_recv import *
+else:
+    from app.func_send_recv import *
+    from app.func_param import *
 
 context = [{'os'}, {'username'}, {'date'}]
+
 
 def client_handler(addr):
     sockobj = socket(AF_INET, SOCK_STREAM)
@@ -13,18 +19,20 @@ def client_handler(addr):
         print('Нвозможно соединиться.')
         raise SystemExit
 
+
 def file_hadler(file_name, sockobj):
-    fragments = []
     try:
         file = open(file_name, 'r')
         lines = file.readlines()
-        for line in lines:
-            body = sender_handler(sockobj, line)
-            fragments.append(body+'\n')
+        body = ' '.join(lines)
+        sender_handler(sockobj, body)
+        body = receiver_handler(sockobj)
         file.close()
-        return ''.join(fragments)
-    except:
-        print('Невозможно открыть файл.')
+        return body
+    except EOFError:
+        print('Невозможно открыть файл.', EOFError)
+
+
 def dispather():
     host = ''
     port, *first = argv_client()
@@ -51,6 +59,7 @@ def dispather():
             print('\necho> ' + answer)
         client.close()
         print('Соединение закрыто.')
+
 
 if __name__ == '__main__':
     dispather()

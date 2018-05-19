@@ -1,5 +1,6 @@
 import sys
 
+
 def create_package(message):
     '''создаю кортеж для отправки'''
     size_message = str(sys.getsizeof(message)) + ':'
@@ -7,10 +8,10 @@ def create_package(message):
     return size_message.encode(), package
 
 
-
 def send_header(sockobj, header):
     ''' отправить заголовок'''
     sockobj.sendall(header)
+
 
 def send_body(sockobj, body):
     '''отправить тело'''
@@ -25,13 +26,15 @@ def receive_header(sockobj):
         header = sockobj.recv(size)
         if ':' in header.decode():
             break
-        size_body +=header.decode()
+        size_body += header.decode()
     return int(size_body)
+
 
 def receive_body(sockobj, size_body):
     '''прининять тело'''
     body = sockobj.recv(size_body)
     return body
+
 
 def sender_handler(sockobj, message):
     ''' Создаю заголовок и тело, отправляю заголовок,

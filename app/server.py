@@ -1,6 +1,11 @@
 from socket import *
-from func_send_recv import *
-from func_param import *
+
+if __name__ == '__main__':
+    from func_param import *
+    from func_send_recv import *
+else:
+    from app.func_send_recv import *
+    from app.func_param import *
 
 
 def create_server(addr):
@@ -17,8 +22,11 @@ def server_handler(sockobj):
         print('Server connected by', address)
         while True:
             client_handler(conn)
+            print('Соединение разорвано.')
+            conn.close()
             break
         break
+    print('SERVER OFF')
     sockobj.close()
 
 
@@ -27,14 +35,13 @@ def client_handler(conn):
         body = receiver_handler(conn)
         if body == '-show-context':
             show_context = ' '.join(create_dict_pattern())
-            sender_handler(show_context)
+            sender_handler(conn, show_context)
         elif body == 'STOP':
             break
         else:
             context = create_dict_pattern()
             body = body.split()
             data = param_handler(body, context)
-            print(data)
             sender_handler(conn, data)
 
 
