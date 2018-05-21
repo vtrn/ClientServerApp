@@ -24,6 +24,9 @@ def receive_header(sockobj):
     size_body = ''
     while True:
         header = sockobj.recv(size)
+        #header является cтрокой, строка неизменяемый тип данных
+        #либо использую постоянно ипользую метод decode()
+        #либо создать новый объект header = header.decode()
         if ':' in header.decode():
             break
         size_body += header.decode()

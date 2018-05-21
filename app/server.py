@@ -12,20 +12,16 @@ def create_server(addr):
     sockobj = socket(AF_INET, SOCK_STREAM)
     sockobj.bind(addr)
     sockobj.listen()
-    print('Серевер запущен.')
+    print('Сервер запущен.')
     return sockobj
 
 
 def server_handler(sockobj):
-    while True:
-        conn, address = sockobj.accept()
-        print('Server connected by', address)
-        while True:
-            client_handler(conn)
-            print('Соединение разорвано.')
-            conn.close()
-            break
-        break
+    conn, address = sockobj.accept()
+    print('Server connected by', address)
+    client_handler(conn)
+    print('Соединение разорвано.')
+    conn.close()
     print('SERVER OFF')
     sockobj.close()
 
@@ -36,7 +32,8 @@ def client_handler(conn):
         if body == '-show-context':
             show_context = ' '.join(create_dict_pattern())
             sender_handler(conn, show_context)
-        elif body == 'STOP':
+        elif body == 'STOP':#попобуй None , elif body == None:
+                            #                   break
             break
         else:
             context = create_dict_pattern()

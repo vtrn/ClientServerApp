@@ -19,7 +19,7 @@ class Test(unittest.TestCase):
     def setUpClass(cls):
         addServer = ('', 0)
         cls.server = server.create_server(addServer)
-        Thread(target=server.server_handler, args=(cls.server,)).start()
+        Thread(target=server.server_handler, args=(cls.server,), daemon=True).start()
         addrClient = (cls.server.getsockname())
         time.sleep(.1)
         cls.client = client.client_handler(addrClient)
