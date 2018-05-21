@@ -4,34 +4,36 @@ import platform
 import time
 
 
+def port_handler(port):
+    if port.isdigit():
+        return int(port)
+    else:
+        print('Недопустимое значение порта.')
+        raise SystemExit
+
+
 def argv_client():
     argv = sys.argv
+
+    try:
+        port = port_handler(sys.argv[1])
+    except:
+        raise SystemExit
+
     if len(argv) < 2:
         print('Введите номер порта. Доступные команды [-show-context]  [-file [путь к файлу]]')
         print('.... [номер порта] [команда]')
         raise SystemExit
     elif len(argv) == 2:
-        port = sys.argv[1]
-        if port.isdigit():
-            return int(port), None
-        else:
-            print('Недопустимое значение номера порта.')
+        return port, None
     elif len(argv) == 3:
-        port = sys.argv[1]
         context = sys.argv[2]
-        if port.isdigit():
-            return int(port), context
-        else:
-            print('Недопустимое значение номера порта.')
+        return port, context
     elif len(argv) == 4:
-        port = sys.argv[1]
         context = sys.argv[2]
         path = sys.argv[3]
         if context == '-file':
-            if port.isdigit:
-                return int(port), context, path
-            else:
-                print('Недопустимое значение номера порта.')
+            return port, context, path
         else:
             print('Неизвестная команда')
 
@@ -67,5 +69,3 @@ def create_dict_pattern():
     time_now = time.ctime()
     dict_pattern = {'{os}': sstm, '{username}': username, '{date}': time_now}
     return dict_pattern
-
-
