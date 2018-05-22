@@ -15,16 +15,14 @@ def port_handler(port):
 def argv_client():
     argv = sys.argv
 
-    try:
-        port = port_handler(sys.argv[1])
-    except:
-        raise SystemExit
-
     if len(argv) < 2:
         print('Введите номер порта. Доступные команды [-show-context]  [-file [путь к файлу]]')
         print('.... [номер порта] [команда]')
         raise SystemExit
-    elif len(argv) == 2:
+
+    port = port_handler(sys.argv[1])
+
+    if len(argv) == 2:
         return port, None
     elif len(argv) == 3:
         context = sys.argv[2]
